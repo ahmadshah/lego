@@ -1,0 +1,22 @@
+FROM php:7.0-fpm
+
+MAINTAINER Ahmad Shah Hafizan Hamidin <ahmadshahhafizan@gmail.com>
+
+# Update image and install necessary items
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends  \
+    curl \
+    zip \
+    unzip \
+    libssl-dev \
+    libmcrypt-dev
+
+#PHP extensions
+RUN docker-php-ext-install mcrypt
+RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install pdo_pgsql
+
+# Composer
+RUN -r "copy('https://getcomposer.org/install', 'composer-setup.php')"
+RUN composer-setup.php
+RUN php-r "unlink('composer-setup.php')"
